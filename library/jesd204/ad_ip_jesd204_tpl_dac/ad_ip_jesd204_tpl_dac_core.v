@@ -52,6 +52,7 @@ module ad_ip_jesd204_tpl_dac_core #(
   // Configuration interface
 
   input dac_sync,
+  input dac_external_sync,
   input dac_dds_format,
 
   input [NUM_CHANNELS*4-1:0] dac_data_sel,
@@ -102,7 +103,7 @@ module ad_ip_jesd204_tpl_dac_core #(
     .CONVERTER_RESOLUTION (CONVERTER_RESOLUTION)
   ) i_pn_gen (
     .clk (clk),
-    .reset (dac_sync),
+    .reset (dac_sync|dac_external_sync),
 
     .pn7_data (pn7_data),
     .pn15_data (pn15_data)
@@ -133,7 +134,7 @@ module ad_ip_jesd204_tpl_dac_core #(
       .pn7_data (pn7_data),
       .pn15_data (pn15_data),
 
-      .dac_data_sync (dac_sync),
+      .dac_data_sync (dac_sync|dac_external_sync),
       .dac_dds_format (dac_dds_format),
 
       .dac_data_sel (dac_data_sel[4*i+:4]),
