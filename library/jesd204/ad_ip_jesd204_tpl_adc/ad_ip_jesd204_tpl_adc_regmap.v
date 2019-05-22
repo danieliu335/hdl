@@ -71,6 +71,10 @@ module ad_ip_jesd204_tpl_adc_regmap #(
 
   output [NUM_CHANNELS-1:0] enable,
 
+  input adc_sync_status,
+  output adc_sync,
+  output adc_rst,
+
   // Underflow
   input adc_dovf,
 
@@ -100,8 +104,6 @@ module ad_ip_jesd204_tpl_adc_regmap #(
   // internal clocks & resets
   wire up_clk;
   wire up_rstn;
-
-  wire adc_rst;
 
   wire up_wreq_s;
   wire [9:0] up_waddr_s;
@@ -213,12 +215,12 @@ module ad_ip_jesd204_tpl_adc_regmap #(
     .adc_ddr_edgesel (),
     .adc_pin_mode (),
     .adc_status (adc_status),
-    .adc_sync_status (1'd0),
+    .adc_sync_status (adc_sync_status),
     .adc_status_ovf (adc_dovf),
     .adc_clk_ratio (CLK_RATIO),
     .adc_start_code (),
     .adc_sref_sync (),
-    .adc_sync (),
+    .adc_sync (adc_sync),
 
     .up_status_pn_err (up_status_pn_err),
     .up_status_pn_oos (up_status_pn_oos),
