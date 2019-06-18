@@ -104,6 +104,8 @@ module ad_ip_jesd204_tpl_adc #(
 
   wire adc_rst;
   wire adc_rst_sync_s;
+  wire adc_sync;
+  wire adc_sync_status;
 
   assign adc_rst_sync = adc_rst | adc_rst_sync_s;
 

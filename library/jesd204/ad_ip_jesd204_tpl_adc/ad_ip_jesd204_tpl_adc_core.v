@@ -75,14 +75,12 @@ module ad_ip_jesd204_tpl_adc_core #(
   assign adc_rst_sync = adc_sync_armed;
 
   always @(posedge clk) begin
+    adc_external_sync_d1 <= adc_external_sync;
+    adc_external_sync_pulse <= ~adc_external_sync_d1 & adc_external_sync;
     if (adc_sync == 1'b1) begin
       adc_sync_armed <= 1'b1;
     end else if (adc_sync_armed == 1'b1 && adc_external_sync_pulse == 1'b1) begin
       adc_sync_armed <= 1'b0;
-    end
-    if(adc_sync_armed == 1'b1) begin
-      adc_external_sync_d1 <= adc_external_sync;
-      adc_external_sync_pulse <= ~adc_external_sync_d1 & adc_external_sync;
     end
   end
 
