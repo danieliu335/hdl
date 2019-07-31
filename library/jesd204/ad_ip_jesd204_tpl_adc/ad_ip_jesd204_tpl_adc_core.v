@@ -83,7 +83,7 @@ module ad_ip_jesd204_tpl_adc_core #(
     if (adc_sync_armed == 1'b1) begin
       adc_external_sync_d1 <= adc_external_sync;
       adc_external_sync_pulse <= ~adc_external_sync_d1 & adc_external_sync;
-    end if
+    end
   end
 
   // synchronization logic

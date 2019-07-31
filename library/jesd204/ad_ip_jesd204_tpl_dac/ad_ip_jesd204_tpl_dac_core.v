@@ -85,7 +85,7 @@ module ad_ip_jesd204_tpl_dac_core #(
   wire [DAC_CDW-1:0] pn7_data;
   wire [DAC_CDW-1:0] pn15_data;
 
-  reg dac_external_sync_r = 'd0;
+  reg dac_external_sync_pulse = 'd0;
   reg dac_external_sync_d1 ='d0;
   reg dac_external_sync_arm ='d0;
 
@@ -94,14 +94,14 @@ module ad_ip_jesd204_tpl_dac_core #(
 
   always @(posedge clk) begin
     if (dac_external_sync_ctl == 1'b1) begin
-      dac_external_sync_arm <= 1'b1;
-    end else if (dac_external_sync_r == 1'b1) begin
+      dac_external_sync_arm <= ~dac_external_sync_arm;
+    end else if (dac_external_sync_pulse == 1'b1) begin
       dac_external_sync_arm <= 1'b0;
     end
 
     if(dac_external_sync_arm == 1'b1) begin
       dac_external_sync_d1 <= dac_external_sync;
-      dac_external_sync_r <= ~dac_external_sync_d1 & dac_external_sync;
+      dac_external_sync_pulse <= ~dac_external_sync_d1 & dac_external_sync;
     end
   end
 
@@ -127,7 +127,7 @@ module ad_ip_jesd204_tpl_dac_core #(
     .CONVERTER_RESOLUTION (CONVERTER_RESOLUTION)
   ) i_pn_gen (
     .clk (clk),
-    .reset (dac_sync|dac_external_sync_r),
+    .reset (dac_sync|dac_external_sync_pulse),
 
     .pn7_data (pn7_data),
     .pn15_data (pn15_data)
@@ -135,8 +135,7 @@ module ad_ip_jesd204_tpl_dac_core #(
 
   // dac valid
 
-  assign dac_valid = {NUM_CHANNELS{1'b1}};
-
+  assign dac_valid = {NUM_CHANNELS{~dac_external_sync_arm}};
 
   generate
   genvar i;
@@ -158,7 +157,7 @@ module ad_ip_jesd204_tpl_dac_core #(
       .pn7_data (pn7_data),
       .pn15_data (pn15_data),
 
-      .dac_data_sync (dac_sync|dac_external_sync_r),
+      .dac_data_sync (dac_sync|dac_external_sync_pulse),
       .dac_dds_format (dac_dds_format),
 
       .dac_data_sel (dac_data_sel[4*i+:4]),
