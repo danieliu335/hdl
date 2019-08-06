@@ -75,6 +75,8 @@ module ad_ip_jesd204_tpl_adc_regmap #(
   output adc_sync,
   output adc_rst,
 
+  input [31:0] counter_debug,
+
   // Underflow
   input adc_dovf,
 
@@ -237,7 +239,7 @@ module ad_ip_jesd204_tpl_adc_regmap #(
     .up_adc_gpio_in (32'd0),
     .up_adc_gpio_out (),
     .up_adc_ce (),
-    .up_pps_rcounter (32'd0),
+    .up_pps_rcounter (counter_debug),
     .up_pps_status (1'b0),
     .up_pps_irq_mask (),
 
