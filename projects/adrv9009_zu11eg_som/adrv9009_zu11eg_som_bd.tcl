@@ -220,8 +220,7 @@ for {set i 0} {$i < $TX_NUM_OF_CONVERTERS} {incr i} {
 }
 
 ad_connect tx_adrv9009_som_tpl_core/dac_dunf util_som_tx_upack/fifo_rd_underflow
-ad_connect tx_sysref_0 tx_adrv9009_som_tpl_core/tpl_core/dac_external_sync
-
+ad_connect axi_adrv9009_som_tx_jesd/tx/sysref_out tx_adrv9009_som_tpl_core/tpl_core/dac_external_sync
 
 create_bd_port -dir O -from 2 -to 0 fsm_debug_0
 
@@ -233,7 +232,7 @@ ad_connect  axi_adrv9009_som_rx_jesd/rx_data_tdata rx_adrv9009_som_tpl_core/link
 ad_connect  axi_adrv9009_som_rx_jesd/rx_data_tvalid rx_adrv9009_som_tpl_core/link_valid
 ad_connect  core_clk_b util_som_rx_cpack/clk
 ad_connect  rx_adrv9009_som_tpl_core/tpl_core/adc_rst_sync util_som_rx_cpack/reset
-ad_connect  rx_adrv9009_som_tpl_core/tpl_core/adc_external_sync rx_sysref_0
+ad_connect  rx_adrv9009_som_tpl_core/tpl_core/adc_external_sync axi_adrv9009_som_rx_jesd/rx/sysref_out
 
 ad_connect rx_adrv9009_som_tpl_core/tpl_core/fsm_debug fsm_debug_0
 

@@ -49,6 +49,7 @@ module jesd204_lmfc (
   input reset,
 
   input sysref,
+  output sysref_out,
 
   input [7:0] cfg_beats_per_multiframe,
   input [7:0] cfg_lmfc_offset,
@@ -92,6 +93,7 @@ always @(posedge clk) begin
   sysref_d2 <= sysref_d1;
   sysref_d3 <= sysref_d2;
 end
+assign sysref_out = sysref_d2;
 
 always @(posedge clk) begin
   if (sysref_d3 == 1'b0 && sysref_d2 == 1'b1 && cfg_sysref_disable == 1'b0) begin

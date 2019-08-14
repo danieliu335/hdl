@@ -58,6 +58,7 @@ module jesd204_rx #(
   input [4*NUM_LANES-1:0] phy_disperr,
 
   input sysref,
+  output sysref_out,
   output lmfc_edge,
   output lmfc_clk,
 
@@ -226,6 +227,7 @@ jesd204_lmfc i_lmfc (
   .cfg_sysref_disable(cfg_sysref_disable),
 
   .sysref(sysref),
+  .sysref_out(sysref_out),
   .lmfc_edge(lmfc_edge),
   .lmfc_clk(lmfc_clk),
   .lmfc_counter(lmfc_counter),

@@ -55,6 +55,7 @@ module jesd204_tx #(
   output [4*NUM_LANES-1:0] phy_charisk,
 
   input sysref,
+  output sysref_out,
   output lmfc_edge,
   output lmfc_clk,
 
@@ -131,6 +132,7 @@ jesd204_lmfc i_lmfc (
   .cfg_sysref_disable(cfg_sysref_disable),
 
   .sysref(sysref),
+  .sysref_out(sysref_out),
 
   .sysref_edge(event_sysref_edge),
   .sysref_alignment_error(event_sysref_alignment_error),
