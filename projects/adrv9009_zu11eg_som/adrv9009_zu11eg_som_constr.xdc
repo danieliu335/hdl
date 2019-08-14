@@ -213,3 +213,11 @@ set_input_delay -clock rx_dev_clk -min 4    [get_ports sysref_b_p];
 
 set_input_delay -clock tx_dev_clk -max 4    [get_ports sysref_a_p];
 set_input_delay -clock tx_dev_clk -min 4    [get_ports sysref_a_p];
+
+## SYSREF's are AC-coupled
+
+set_property DQS_BIAS TRUE [get_ports sysref_a_p]
+set_property EQUALIZATION EQ_LEVEL0 [get_ports sysref_a_p]
+set_property DQS_BIAS TRUE [get_ports sysref_b_p]
+set_property EQUALIZATION EQ_LEVEL0 [get_ports sysref_b_p]
+
