@@ -126,7 +126,6 @@ module axi_dac_interpolate #(
 
   wire    [ 1:0]    low_level;
   wire    [ 1:0]    high_level;
-  wire    [ 1:0]    any_edge;
   wire    [ 1:0]    rise_edge;
   wire    [ 1:0]    fall_edge;
 
@@ -143,21 +142,19 @@ module axi_dac_interpolate #(
 
   assign low_level  = trigger_config[1:0];
   assign high_level = trigger_config[3:2];
-  assign any_edge   = trigger_config[5:4];
+  assign fall_edge  = trigger_config[5:4];
   assign rise_edge  = trigger_config[7:6];
-  assign fall_edge  = trigger_config[9:8];
 
-  assign en_trigger_pins = trigger_config[17:16];
-  assign en_trigger_adc  = trigger_config[18];
-  assign en_trigger_la   = trigger_config[19];
+  assign en_trigger_pins = trigger_config[9:8];
+  assign en_trigger_adc  = trigger_config[10];
+  assign en_trigger_la   = trigger_config[11];
 
-  assign trigger_active = |trigger_config[19:16];
+  assign trigger_active = |trigger_config[11:8];
   assign trigger = (ext_trigger & en_trigger_pins) |
                    (trigger_adc & en_trigger_adc) |
                    (trigger_la & en_trigger_la);
 
-  assign ext_trigger = any_edge_trigger |
-                       rise_edge_trigger |
+  assign ext_trigger = rise_edge_trigger |
                        fall_edge_trigger |
                        high_level_trigger |
                        low_level_trigger;
@@ -166,7 +163,6 @@ module axi_dac_interpolate #(
    trigger_m1 <= trigger_i;
    trigger_m2 <= trigger_m1;
 
-   any_edge_trigger <= (trigger_m2 ^ trigger_m1) & any_edge;
    rise_edge_trigger <= ((trigger_m2 ^ trigger_m1 ) & trigger_i) & rise_edge;
    fall_edge_trigger <= ((trigger_m2 ^ trigger_m1) & ~trigger_i) & fall_edge;
    high_level_trigger <= trigger_m2 & high_level;
