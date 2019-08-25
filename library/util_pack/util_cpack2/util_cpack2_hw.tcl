@@ -56,7 +56,20 @@ proc util_cpack_elab {} {
   set sample_data_width [get_parameter_value SAMPLE_DATA_WIDTH]
 
   set channel_data_width [expr $sample_data_width * $samples_per_channel]
-  set total_data_width [expr $num_channels * $channel_data_width]
+
+  if {$num_channels > 8} {
+    set real_num_channels 16
+  } elseif {$num_channels > 4} {
+    set real_num_channels 8
+  } elseif {$num_channels > 2} {
+    set real_num_channels 4
+  } elseif {$num_channels > 1} {
+    set real_num_channels 2
+  } else {
+    set real_num_channels 1
+  }
+
+  set total_data_width [expr $real_num_channels * $channel_data_width]
 
   add_interface clk clock end
   add_interface_port clk clk clk Input 1
