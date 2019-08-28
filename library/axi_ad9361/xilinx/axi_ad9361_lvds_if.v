@@ -39,7 +39,8 @@ module axi_ad9361_lvds_if #(
 
   parameter   FPGA_TECHNOLOGY = 0,
   parameter   DAC_IODELAY_ENABLE = 0,
-  parameter   IO_DELAY_GROUP = "dev_if_delay_group") (
+  parameter   IO_DELAY_GROUP = "dev_if_delay_group",
+  parameter   RX_NODPA = 0) (
 
   // physical interface (receive)
 

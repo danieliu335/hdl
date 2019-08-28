@@ -69,6 +69,7 @@ ad_ip_parameter DAC_DDS_DISABLE INTEGER 0
 ad_ip_parameter DAC_USERPORTS_DISABLE INTEGER 0
 ad_ip_parameter DAC_IQCORRECTION_DISABLE INTEGER 0
 ad_ip_parameter IO_DELAY_GROUP STRING {dev_if_delay_group}
+ad_ip_parameter RX_NODPA INTEGER 0
 
 adi_add_auto_fpga_spec_params
 
@@ -171,6 +172,7 @@ proc axi_ad9361_elab {} {
 
   set m_fpga_technology [get_parameter_value "FPGA_TECHNOLOGY"]
   set m_cmos_or_lvds_n [get_parameter_value "CMOS_OR_LVDS_N"]
+  set rx_nodpa [get_parameter_value "RX_NODPA"]
 
   if { $m_fpga_technology == 103 } {
 
@@ -183,9 +185,12 @@ proc axi_ad9361_elab {} {
     set_instance_parameter_value axi_ad9361_serdes_clk {SERDES_FACTOR} {4}
     set_instance_parameter_value axi_ad9361_serdes_clk {CLKIN_FREQUENCY} {250.0}
 
+    set rx_serdes_mode IN
+    if {$rx_nodpa == 1} {set rx_serdes_mode IN_NODPA}
+
     add_hdl_instance axi_ad9361_serdes_in alt_serdes
     set_instance_parameter_value axi_ad9361_serdes_in {DEVICE_FAMILY} {Arria 10}
-    set_instance_parameter_value axi_ad9361_serdes_in {MODE} {IN}
+    set_instance_parameter_value axi_ad9361_serdes_in {MODE} $rx_serdes_mode
     set_instance_parameter_value axi_ad9361_serdes_in {DDR_OR_SDR_N} {1}
     set_instance_parameter_value axi_ad9361_serdes_in {SERDES_FACTOR} {4}
     set_instance_parameter_value axi_ad9361_serdes_in {CLKIN_FREQUENCY} {250.0}
@@ -201,6 +206,10 @@ proc axi_ad9361_elab {} {
     set_instance_parameter_value axi_ad9361_data_out {PIN_TYPE_GUI} {Output}
     set_instance_parameter_value axi_ad9361_data_out {SIZE} {1}
     set_instance_parameter_value axi_ad9361_data_out {gui_io_reg_mode} {DDIO}
+
+    add_hdl_instance clk_buffer altclkctrl
+    set_instance_parameter_value clk_buffer {DEVICE_FAMILY} {Arria 10}
+
   }
 
   add_interface device_if conduit end
