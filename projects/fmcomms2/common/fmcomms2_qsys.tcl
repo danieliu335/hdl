@@ -135,9 +135,9 @@ ad_cpu_interrupt 3 axi_dac_dma.interrupt_sender
 
 # cpu interconnects
 
-ad_cpu_interconnect 0x00120000 axi_ad9361.s_axi
-ad_cpu_interconnect 0x00100000 axi_adc_dma.s_axi
-ad_cpu_interconnect 0x00104000 axi_dac_dma.s_axi
+ad_cpu_interconnect 0x00020000 axi_ad9361.s_axi
+ad_cpu_interconnect 0x00040000 axi_adc_dma.s_axi
+ad_cpu_interconnect 0x00044000 axi_dac_dma.s_axi
 
 # mem interconnects
 # set_instance_parameter_value sys_hps {F2SDRAM_Width} {64 128 64}
